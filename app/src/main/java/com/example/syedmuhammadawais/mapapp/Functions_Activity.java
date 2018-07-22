@@ -124,6 +124,14 @@ public class Functions_Activity extends AppCompatActivity implements LocationLis
 //        ratting.setOnClickListener(this);
 
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        boolean Is_Location_On = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        if (!Is_Location_On) {
+            Toast.makeText(getApplicationContext(), "Please Enable Your Location", Toast.LENGTH_LONG).show();
+            startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), 12);
+
+        } else {
+            getLocation(this);
+        }
 
 
 
@@ -175,14 +183,14 @@ public class Functions_Activity extends AppCompatActivity implements LocationLis
     @Override
     protected void onResume() {
         super.onResume();
-        boolean Is_Location_On = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        if (!Is_Location_On) {
-            Toast.makeText(getApplicationContext(), "Please Enable Your Location", Toast.LENGTH_LONG).show();
-            startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), 12);
-
-        } else {
-            getLocation(this);
-        }
+//        boolean Is_Location_On = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+//        if (!Is_Location_On) {
+//            Toast.makeText(getApplicationContext(), "Please Enable Your Location", Toast.LENGTH_LONG).show();
+//            startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), 12);
+//
+//        } else {
+//            getLocation(this);
+//        }
     }
 
     @Override
@@ -335,6 +343,8 @@ public class Functions_Activity extends AppCompatActivity implements LocationLis
 
 
     public void getLocation(OnCompleteListener<Location> listener) {
+        Log.e(Functions_Activity.class.getSimpleName(),"getLocation");
+
         if (this.checkLocationAppPermission()) {
             if (this.isGPSEnable()) {
 
@@ -375,6 +385,7 @@ public class Functions_Activity extends AppCompatActivity implements LocationLis
         return manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
     public void requestLocationAppPermission() {
+        Log.e(Functions_Activity.class.getSimpleName(),"requestLocationAppPermission");
         ActivityCompat.requestPermissions(this,
                 new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                 99);
@@ -382,8 +393,10 @@ public class Functions_Activity extends AppCompatActivity implements LocationLis
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        Log.e(Functions_Activity.class.getSimpleName(),"onRequestPermissionsResult "+requestCode);
         switch (requestCode) {
             case 99: {
+
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     if (ContextCompat.checkSelfPermission(this,
                             android.Manifest.permission.ACCESS_FINE_LOCATION)
@@ -393,8 +406,8 @@ public class Functions_Activity extends AppCompatActivity implements LocationLis
                     }
 
                 } else {
-                    //M.t(this, "Permission Require");
-                    this.requestLocationAppPermission();
+                    Toast.makeText(this, "Permission Require",Toast.LENGTH_LONG).show();
+                   // this.requestLocationAppPermission();
                 }
                 return;
             }

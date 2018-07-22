@@ -36,7 +36,8 @@ import com.google.android.gms.ads.InterstitialAd;
  * A simple {@link Fragment} subclass.
  */
 public class NavigationFragment extends Fragment {
-    LinearLayout RouteFinder,MyLocation,DrivingRoute,FavPlaces,FrindLocation,ShareLocation,_2DRoute,Recomended;
+    LinearLayout RouteFinder,MyLocation,DrivingRoute,FavPlaces,FrindLocation,ShareLocation,_2DRoute,Recomended,
+                    moreApps,privacyPolicy,rateUs;
     View Layout;
     LocationManager locationManager;
     double lon, lat;
@@ -94,6 +95,9 @@ public class NavigationFragment extends Fragment {
         ShareLocation= (LinearLayout) Layout.findViewById(R.id.shareLocation);
         _2DRoute= (LinearLayout) Layout.findViewById(R.id._2dRoute);
         Recomended= (LinearLayout) Layout.findViewById(R.id.recomended);
+        moreApps=Layout.findViewById(R.id.moreapps);
+        rateUs= Layout.findViewById(R.id.rateus);
+        privacyPolicy=Layout.findViewById(R.id.privacypolicy);
 
 
     }
@@ -106,6 +110,9 @@ public class NavigationFragment extends Fragment {
         ShareLocation.setOnClickListener(onClick);
         _2DRoute.setOnClickListener(onClick);
         Recomended.setOnClickListener(onClick);
+        moreApps.setOnClickListener(onClick);
+        rateUs.setOnClickListener(onClick);
+        privacyPolicy.setOnClickListener(onClick);
         mInterstitialAd = new InterstitialAd(getActivity());
         mInterstitialAd.setAdUnitId((AdmobAppID));
         adRequestFull = new AdRequest.Builder()
@@ -266,6 +273,62 @@ public class NavigationFragment extends Fragment {
                     });
 
 
+                    break;
+                case R.id.rateus:
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.area413.GpsRouteMaps.DynamicDirectionsNavigation")); // Open precisely @link SmartBooks
+                    boolean tryAgain = false; // Flag to denote that normal attempt to launch GooglePlay update failed
+
+                    try
+                    {
+                        startActivity(intent);
+                    }
+                    catch(Exception e)
+                    {
+                        tryAgain = true;
+                    }
+
+                    if (!tryAgain) return;
+
+                    // Try to launch GooglePlay with SB in browser !
+                    try
+                    {
+                        intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=com.area413.GpsRouteMaps.DynamicDirectionsNavigation"));
+                        startActivity(intent);
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                    break;
+                case R.id.privacypolicy:
+                    Intent rateIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://sites.google.com/view/area413-studios-apps/privacy-policy"));
+                    startActivity(rateIntent);
+                    break;
+                case R.id.moreapps:
+                     intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/search?q=Ak413+Studios")); // Open precisely @link SmartBooks
+                     tryAgain = false; // Flag to denote that normal attempt to launch GooglePlay update failed
+
+                    try
+                    {
+                        startActivity(intent);
+                    }
+                    catch(Exception e)
+                    {
+                        tryAgain = true;
+                    }
+
+                    if (!tryAgain) return;
+
+                    // Try to launch GooglePlay with SB in browser !
+                    try
+                    {
+                        intent.setData(Uri.parse("https://play.google.com/store/search?q=Ak413+Studios"));
+                        startActivity(intent);
+                    }
+                    catch (Exception e)
+                    {
+                       e.printStackTrace();
+                    }
                     break;
             }
 
